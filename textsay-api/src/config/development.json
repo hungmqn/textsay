@@ -1,0 +1,16 @@
+{
+  "allowOrigin": ["*"],
+  "database": {
+    "username": "satextsay",
+    "password": 1,
+    "database": "textsay-dev",
+    "host": "127.0.0.1",
+    "dialect": "postgres",
+    "port": 5432
+  },
+  "server": {
+    "host": "localhost",
+    "port": 9420
+  },
+  "apiVersion": 1
+}

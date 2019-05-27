@@ -1,0 +1,24 @@
+{
+  "name": "textsay-postgres",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "./node_modules/.bin/sequelize db:migrate",
+    "migrate:undo": "./node_modules/.bin/sequelize db:migrate:undo:all",
+    "seed": "./node_modules/.bin/sequelize db:seed:all",
+    "start": "npm run migrate && npm run seed",
+    "reset": "npm run migrate:undo && npm run migrate && npm run seed"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "^7.9.0",
+    "sequelize": "^5.1.0"
+  },
+  "devDependencies": {
+    "sequelize-cli": "^5.4.0"
+  }
+}

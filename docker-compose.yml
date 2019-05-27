@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  postgres:
+    # build: ./src/postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: satextsay
+      POSTGRES_PASSWORD: 1
+      POSTGRES_DB: textsay-dev
+    ports:
+      - "5432:5432"
+    
