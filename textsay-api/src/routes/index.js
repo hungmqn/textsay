@@ -10,7 +10,8 @@ class IndexRoute {
       res.send('API server running...');
     });
     this.router.use('/auth', authenticate);
-    this.router.use([middlewares.authorize]);
+    // this.router.use([middlewares.authorize]);
+    this.router.use([middlewares.authorizeToken]); // Authorize using JWT Token
     this.router.use(`/api/${config.apiVersion}`, api);
   }
 }

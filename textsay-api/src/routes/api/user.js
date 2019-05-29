@@ -5,7 +5,8 @@ const { UserController } = require('../../controllers');
 class UserRoutes extends BaseRouter {
   constructor() {
     super(UserController);
-    this.router.put('/update/:id', [middlewares.authorize], this.updatePassword.bind(this));
+    // this.router.post('/update/:id', [middlewares.authorize], this.updatePassword.bind(this));
+    this.router.post('/update/:id', [middlewares.authorizeToken], this.updatePassword.bind(this));
   }
 
   async updatePassword(req, res) {

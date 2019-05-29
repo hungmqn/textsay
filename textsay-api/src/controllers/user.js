@@ -1,7 +1,9 @@
 const BaseController = require('./base')
   , { User } = require('../services/postgres')
   , utils = require('../services/utils')
-  , crypto = require('crypto');
+  , crypto = require('crypto')
+  , jwt = require('jsonwebtoken');
+  
 
 module.exports = class UserController extends BaseController {
   constructor() {
@@ -30,7 +32,23 @@ module.exports = class UserController extends BaseController {
     };
   }
 
+  async signin(params) {
+    params.password = utils.hashPassword(params.username, params.password);
+    const user = await this.getItem(params);
+    if (!user) {
+      throw new Error('Wrong username or password');
+    }
+    const result = Object.assign({ username: user.username }, { role: user.role }, { id: user.id })
+      , jwtToken = jwt.sign(result, config.secretJWT, { expiresIn: '2h'});
+
+    return {
+      id: result.id,
+      token: jwtToken
+    };
+  }
+
   async register(params) {
+    params['role'] = 2;
     return await this.create(params);
   }
 

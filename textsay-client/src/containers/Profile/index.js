@@ -1,5 +1,5 @@
-import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-import React, { useEffect } from 'react';
+import { Layout, Menu, Breadcrumb, Icon, Modal, Form, Input, Typography } from 'antd';
+import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import { Link, navigate } from '@reach/router';
 import { actions as authActions } from '../../store/auth/auth.meta';
@@ -8,12 +8,29 @@ import './index.css';
 
 const { SubMenu, ItemGroup } = Menu;
 const { Header, Content, Sider } = Layout;
+const { Title } = Typography;
 
 const Profile = (props) => {
   const {
+    form: { getFieldDecorator, validateFields },
     auth,
+    changePassword,
     logout,
   } = props;
+
+  const [visible, showModal] = useState(false);
+  const [ username, setUsername ] = useState('');
+  const [ old_password, setOldPassword ] = useState('');
+  const [ new_password, setNewPassword ] = useState('');
+
+  const handleUpdatePassword = () => {
+    validateFields((err, values) => {
+      if (!err) {
+        changePassword(auth.id, username, old_password, new_password);
+      }
+    });
+    ;
+  };
 
   /* call once when mounted
   put values (such as props) on array, if one of the values changes, it will be called */
@@ -67,6 +84,56 @@ const Profile = (props) => {
               </Menu.Item>
             </ItemGroup>
           </SubMenu>
+          <Menu.Item key="3" onClick={() => showModal(true)}>
+            <Icon type="setting" />
+            Change password
+          </Menu.Item>
+          <Modal
+            title="Change password"
+            visible={visible}
+            onOk={handleUpdatePassword}
+            confirmLoading={auth.isLoading}
+            onCancel={() => showModal(false)}
+          >
+            <Form method="post">
+              <Title level={4} type="danger">{auth.message}</Title>
+              <Form.Item>
+                {
+                  (getFieldDecorator('username', {
+                    rules: [{ required: true, message: 'Please input your username' }],
+                  })) (<Input
+                    prefix={<Icon type="user" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    placeholder="Username"
+                    onChange={e => setUsername(e.target.value)}
+                  />)
+                }
+              </Form.Item>
+              <Form.Item>
+                {
+                  (getFieldDecorator('old_password', {
+                    rules: [{ required: true, message: 'Please input your old password' }],
+                  })) (<Input
+                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    type="password"
+                    placeholder="Old password"
+                    onChange={e => setOldPassword(e.target.value)}
+                  />)
+                }
+              </Form.Item>
+              <Form.Item>
+                {
+                  (getFieldDecorator('new_password', {
+                    rules: [{ required: true, message: 'Please input your new password' }],
+                  })) (<Input
+                    prefix={<Icon type="lock" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                    type="password"
+                    placeholder="New Password"
+                    onChange={e => setNewPassword(e.target.value)}
+                  />)
+                }
+              </Form.Item>
+            </Form>
+          </Modal>
           <Menu.Item key="4" onClick={logout}>
             <Icon type="logout" />
             Logout
@@ -149,14 +216,15 @@ const Profile = (props) => {
 
 const mapStateToProps = state => {
   return {
-    loading: state.loading,
     auth: state.auth,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(authActions.logout()),
+  changePassword: (id, username, password, new_password) => dispatch(authActions.changePassword({id, username, password, new_password}))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Profile);
+const ConnectedProfile = connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default Form.create()(ConnectedProfile);
 

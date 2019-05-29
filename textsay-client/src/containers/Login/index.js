@@ -92,13 +92,13 @@ const Login = (props) => {
 
 const mapStateToProps = state => {
   return {
-    loading: state.loading,
     auth: state.auth,
   }
 }
 
 const mapDispatchToProps = dispatch => ({
-  login: (username, password) => dispatch(authActions.login({ username: username, password: password })),
+  // login: (username, password) => dispatch(authActions.login({ username: username, password: password })),
+  login: (username, password) => dispatch(authActions.signin({ username: username, password: password })),
 })
 
 const ConnectedLogin = connect(mapStateToProps, mapDispatchToProps)(Login);
