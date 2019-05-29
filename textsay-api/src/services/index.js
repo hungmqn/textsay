@@ -1,3 +1,4 @@
 module.exports = {
-  postgres: require('./postgres')
+  postgres: require('./postgres'),
+  redis: require('./redis'),
 };

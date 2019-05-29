@@ -30,7 +30,8 @@ const Login = (props) => {
   /* call once when mounted
   put values (such as props) on array, if one of the values changes, it will be called */
   useEffect(() => {
-    if (auth.id && auth.token) {
+    const token = window.sessionStorage.getItem('token');
+    if (token) {
       navigate('/profile')
     }
   }, [auth]);

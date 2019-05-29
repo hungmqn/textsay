@@ -3,7 +3,6 @@ const BaseController = require('./base')
   , utils = require('../services/utils')
   , crypto = require('crypto')
   , jwt = require('jsonwebtoken');
-  
 
 module.exports = class UserController extends BaseController {
   constructor() {

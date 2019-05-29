@@ -32,7 +32,8 @@ const Register = (props) => {
   }
 
   useEffect(() => {
-    if (auth.id && auth.token) {
+    const token = window.sessionStorage.getItem('token');
+    if (token) {
       navigate('/profile')
     }
   }, [auth]);

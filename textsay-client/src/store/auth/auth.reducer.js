@@ -11,7 +11,7 @@ const reducer = (state = { isLoading: false }, action = {}) => {
     case types.REGISTER:
       return { ...state, isLoading: true };
     case types.REGISTER_SUCCESS:
-      return { ...state, ...action.payload.data, isLoading: false };
+      return { ...state, ...action.payload.data, message: 'Success', isLoading: false };
     case types.REGISTER_ERROR:
       return { ...state, message: action.payload.response.data, isLoading: false };
     case types.CHANGE_PASSWORD:
@@ -21,6 +21,7 @@ const reducer = (state = { isLoading: false }, action = {}) => {
     case types.CHANGE_PASSWORD_ERROR:
       return { ...state, message: action.payload.response.data.message, isLoading: false };
     case types.LOGOUT:
+      window.sessionStorage.clear();
       return {};
     default:
       return state;

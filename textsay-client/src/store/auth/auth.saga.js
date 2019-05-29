@@ -30,10 +30,10 @@ const handleSignin = function* (action) {
    try {
       const { payload } = action;
       const result = yield call(signin, payload);
-      Api.defaults.headers = {
-         Authorization: `Bearer ${result.data.token}`
-      }
-      console.log(result)
+      window.sessionStorage.setItem('token', result.data.token);
+      // Api.defaults.headers = {
+      //    Authorization: `Bearer ${result.data.token}`
+      // }
       yield put(actions.loginSuccess(result));
       // yield put(types.LOGIN_SUCCESS, result);
    } catch (error) {

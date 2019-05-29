@@ -1,5 +1,6 @@
 const express = require('express');
 const { UserController } = require('../../controllers');
+const { redis } = require('../../services');
 
 class AnthenticateRoutes {
   constructor() {
@@ -26,6 +27,7 @@ class AnthenticateRoutes {
         throw new Error('Already signed in');
       } else {
         const result = await this.Controller.signin(req.body);
+        redis.set(result.token, result.id); // cache token to redis
         res.status(200).json(result);
       }
     } catch (error) {
